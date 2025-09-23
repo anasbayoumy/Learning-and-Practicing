@@ -17,9 +17,8 @@ Below is a list of branches and what was practiced in each:
 
 | Branch Name         | What Was Practiced                                      |
 |---------------------|----------------------------------------------------------|
-| `experiment-x`      | Example: Practicing Docker setup with Node.js            |
-| `feature-y`         | Example: Implementing message queue with RabbitMQ        |
-| `experiment-z`      | Example: Trying out PostgreSQL migrations with Prisma    |
+| `simple RabbitMQ with docker`      | Practicing Docker setup with Node.js, with it's microservice architecture and connections using message broker            |
+
 
 _Add new rows here as you create and explore new branches._
 
@@ -46,56 +45,3 @@ It helps ensure that new technologies are well-understood before being implement
 
 ---
 
-## 🚀 Current Project: Task Management Microservices
-
-This particular branch contains a **microservices architecture** with the following components:
-
-### Services
-- **User Service** (Port 3000) - User management
-- **Task Service** (Port 3001) - Task CRUD operations with RabbitMQ integration
-- **Notification Service** (Port 3002) - Handles notifications via message queue
-- **MongoDB** (Port 27017) - Database
-- **RabbitMQ** (Port 5672) - Message broker
-
-### Technologies Used
-- **Node.js & Express** - Backend services
-- **MongoDB** - Database
-- **Docker & Docker Compose** - Containerization
-- **RabbitMQ** - Message queuing
-- **Mongoose** - MongoDB ODM
-
-### Quick Start
-```bash
-# Start all services
-docker-compose up -d
-
-# Check service status
-docker-compose ps
-
-# View logs
-docker-compose logs -f <service-name>
-```
-
----
-
-## 🔮 Future Experiments
-
-- [ ] **Kubernetes** - Container orchestration
-- [ ] **Redis** - Caching layer
-- [ ] **GraphQL** - API query language
-- [ ] **gRPC** - High-performance RPC
-- [ ] **Elasticsearch** - Search and analytics
-- [ ] **Prometheus & Grafana** - Monitoring and observability
-- [ ] **Nginx** - Load balancing and reverse proxy
-- [ ] **PostgreSQL** - Relational database alternative
-- [ ] **Apache Kafka** - Event streaming platform
-- [ ] **Consul** - Service discovery and configuration
-
----
-
-## 📝 Notes
-
-- Each experiment should be well-documented
-- Include setup instructions and key learnings
-- Clean up experimental code before merging to main
-- Use meaningful commit messages and branch names
