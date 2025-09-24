@@ -29,12 +29,11 @@ function formatDateTimeForMySQL(dateString) {
     return dateString;
   }
   
-  // Convert ISO string to MySQL format
   const date = new Date(dateString);
   return date.toISOString().slice(0, 19).replace('T', ' ');
 }
 
-// Health check endpoint
+
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'healthy', 
@@ -44,7 +43,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Database test endpoint
+
 app.get('/test-db', async (req, res) => {
   try {
     const [rows] = await pool.execute('SELECT 1 as test');
@@ -185,7 +184,7 @@ async function saveUser(userData) {
 // <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>RabbitMQ functions<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 async function connectToRabbitMQ() {
     try {
-        // Connect to User's own RabbitMQ (to publish user creation messages)
+
         const userRabbitmqUrl = process.env.USER_RABBITMQ_URL || 'amqp://admin:admin123@rabbitmq_user:5672';
         logger.info('Connecting to User RabbitMQ:', userRabbitmqUrl);
         connection_user = await amqp.connect(userRabbitmqUrl);

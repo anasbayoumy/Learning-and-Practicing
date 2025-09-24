@@ -25,7 +25,7 @@ let cardGeneratedQueue = 'card_generated_queue';
 // Initialize RabbitMQ connections
 async function initRabbitMQ() {
   try {
-    // Connect to User Service RabbitMQ (to consume user creation messages)
+
     const userRabbitmqUrl = process.env.USER_RABBITMQ_URL || 'amqp://admin:admin123@rabbitmq_user:5672';
     logger.info('Connecting to User RabbitMQ:', userRabbitmqUrl);
     connection_user = await amqp.connect(userRabbitmqUrl);
@@ -37,18 +37,15 @@ async function initRabbitMQ() {
     connection_card = await amqp.connect(cardRabbitmqUrl);
     channel_card = await connection_card.createChannel();
 
-    // Declare queues on both servers
     await channel_user.assertQueue(userCreatedQueue, { durable: true });
     await channel_card.assertQueue(cardGeneratedQueue, { durable: true });
 
-    // Set up consumer for user_created_queue (from user's RabbitMQ)
     await channel_user.consume(userCreatedQueue, async (msg) => {
       if (msg) {
         try {
           const userData = JSON.parse(msg.content.toString());
           logger.info('Received user data from user RabbitMQ:', userData);
-          
-          // Process user and create card
+
           await processUserAndCreateCard(userData);
           
           channel_user.ack(msg);
