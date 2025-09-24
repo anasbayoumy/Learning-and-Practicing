@@ -18,6 +18,7 @@ Below is a list of branches and what was practiced in each:
 | Branch Name         | What Was Practiced                                      |
 |---------------------|----------------------------------------------------------|
 | `simple RabbitMQ with docker`      | Practicing Docker setup with Node.js, with it's microservice architecture and connections using message broker            |
+| `User card queue task`      | Practicing rabbitmq with multiple instances and decoupling. waiting for queue and provide better services         |
 
 
 _Add new rows here as you create and explore new branches._
@@ -44,4 +45,5 @@ This repo is purely for learning, testing, and exploration.
 It helps ensure that new technologies are well-understood before being implemented in production-grade projects.
 
 ---
+
 
