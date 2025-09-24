@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  # User Database
+  mysql_user:
+    image: mysql:8.0
+    container_name: mysql_user
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: users_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./userDB/user.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - user-network
+
+  # User Service RabbitMQ Server
+  rabbitmq_user:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_user
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+    ports:
+      - "5672:5672"   # AMQP port
+      - "15672:15672" # Management UI port
+    networks:
+      - user-network
+
+  # User Service
+  user_service:
+    build: ./user_service
+    container_name: user_service
+    environment:
+      MYSQL_HOST: mysql_user
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASS: rootpass
+      MYSQL_DB: users_db
+      USER_RABBITMQ_URL: amqp://admin:admin123@rabbitmq_user:5672
+      CARD_RABBITMQ_URL: amqp://admin:admin123@rabbitmq_card:5672
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql_user
+      - rabbitmq_user
+    networks:
+      - user-network
+      - card-network
+
+  # Card Database
+  mysql_card:
+    image: mysql:8.0
+    container_name: mysql_card
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: cards_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./cardDB/card.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - card-network
+
+  # Card Service RabbitMQ Server
+  rabbitmq_card:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_card
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+    ports:
+      - "5673:5672"   # AMQP port
+      - "15673:15672" # Management UI port
+    networks:
+      - card-network
+
+  # Card Service
+  card_service:
+    build: ./card_service
+    container_name: card_service
+    environment:
+      MYSQL_HOST: mysql_card
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASS: rootpass
+      MYSQL_DB: cards_db
+      USER_RABBITMQ_URL: amqp://admin:admin123@rabbitmq_user:5672
+      CARD_RABBITMQ_URL: amqp://admin:admin123@rabbitmq_card:5672
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mysql_card
+      - rabbitmq_card
+      - rabbitmq_user
+    networks:
+      - card-network
+      - user-network
+
+networks:
+  user-network:
+    driver: bridge
+  card-network:
+    driver: bridge
